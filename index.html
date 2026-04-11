@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title id="dynamic-title">OmniCart - Universal Shopping Cart</title>
+    <meta name="title" content="OmniCart - Universal Shopping Cart">
+    <meta name="description" content="Stop managing fifty different wishlists. OmniCart is your universal shopping cart. Save items from Amazon, Walmart, Target, PCPartPicker, and any other store into one collaborative workspace.">
+    <meta name="keywords" content="universal cart, shopping list, pc build planner, wishlist, multi-store cart, omnicart, save products, collaborative shopping, registry">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+
+    <link id="dynamic-favicon" rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMGYxNzJhIiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSA4bDMtNGg4bDMgNCI+PC9wYXRoPjxwYXRoIGQ9Ik01IDhoMTR2MTJhMiAyIDAgMCAxLTIgMkg3YTIgMiAwIDAgMS0yLTJWOHoiPjwvcGF0aD48cGF0aCBkPSJNOCAxMmE0IDQgMCAwIDAgOCAwIj48L3BhdGg+PC9zdmc+">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://omni-cart.org/">
+    <meta property="og:title" content="OmniCart - Universal Shopping Cart">
+    <meta property="og:description" content="Combine all your stores into one universal cart. Build PC setups, plan room makeovers, and collaborate on shopping lists seamlessly.">
+    <meta property="og:image" content="https://i.imgur.com/IItCkuw.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="no-select">
+    <div class="ambient-bg" id="ambient-bg">
+        <div class="bg-blob blob-1"></div>
+        <div class="bg-blob blob-2"></div>
+        <div class="bg-blob blob-3"></div>
+    </div>
+    
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+    <div class="app-layout" id="app-layout">
+        <aside class="gemini-sidebar force-hidden" id="workspace-sidebar">
+            <div class="sidebar-top">
+                <button id="sidebar-toggle-btn" class="btn-icon sidebar-hamburger" aria-label="Toggle Sidebar">
+                    <svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+                <button id="btn-search-workspaces" class="btn-icon" aria-label="Search">
+                    <svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+            </div>
+
+            <div class="sidebar-actions">
+                <button class="gemini-new-btn" id="btn-new-workspace">
+                    <svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                    <span class="sidebar-text">New workspace</span>
+                </button>
+            </div>
+
+            <div class="sidebar-scroll">
+                <div class="sidebar-section" id="pinned-section" style="display: none;">
+                    <div class="sidebar-section-title sidebar-text">Pinned</div>
+                    <div class="cart-navigation-list" id="sidebar-pinned-list"></div>
+                </div>
+
+                <div class="sidebar-section" id="workspaces-section">
+                    <div class="sidebar-section-title sidebar-text">Workspaces</div>
+                    <div class="cart-navigation-list" id="sidebar-carts-list"></div>
+                </div>
+            </div>
+            
+            <div class="sidebar-bottom">
+                <button class="btn-icon" id="theme-toggle-btn" aria-label="Toggle Theme">
+                    <svg viewBox="0 0 24 24" class="icon-svg theme-icon-sun" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg viewBox="0 0 24 24" class="icon-svg theme-icon-moon" fill="none" stroke="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+            </div>
+        </aside>
+
+        <div class="main-content-wrapper">
+            <header class="gemini-header" id="main-app-header">
+                <div class="header-left">
+                    <div class="logo nav-link-internal" data-route="/" style="display: flex; align-items: center; gap: 10px;">
+                        <svg viewBox="0 0 24 24" class="header-logo-icon" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 24px; height: 24px;">
+                            <path d="M5 8l3-4h8l3 4"></path>
+                            <path d="M5 8h14v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8z"></path>
+                            <path d="M8 12a4 4 0 0 0 8 0"></path>
+                        </svg>
+                        <span>OmniCart</span>
+                    </div>
+                </div>
+                
+                <div class="header-right">
+                    <div id="nav-auth-buttons" style="display: flex; gap: 10px;">
+                        <button class="btn-secondary" id="btn-nav-login">Log In</button>
+                        <button class="btn-primary" id="btn-nav-register">Sign Up</button>
+                    </div>
+
+                    <div id="header-authenticated-actions" style="display: none; align-items: center; gap: 8px;">
+                        <button class="btn-header-action" id="btn-header-share" style="display: none;">
+                            <svg viewBox="0 0 24 24" class="icon-svg-small" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                            Share
+                        </button>
+                        <button class="btn-icon" id="btn-header-more" style="display: none;">
+                            <svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                        </button>
+                        <div id="nav-user-profile" class="header-profile-btn">
+                            <img src="https://via.placeholder.com/150" id="header-pfp" class="header-pfp" alt="Profile">
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main id="view-landing" class="view active-view scrollable-view">
+                <div class="landing-container">
+                    
+                    <div class="hero-split-layout">
+                        <div class="hero-text-content">
+                            <div class="badge-pill">OmniCart V6</div>
+                            <h1 class="hero-title selectable">All your stores.<br><span class="hero-highlight">One universal cart.</span></h1>
+                            <p class="hero-subtitle">Stop managing fifty different wishlists across the internet. Create dedicated, shareable workspaces for your PC builds, studio setups, and daily shopping.</p>
+                            <div class="hero-cta-group" style="margin-top: 1rem;">
+                                <button class="btn-primary btn-large" id="btn-hero-cta" style="display: inline-flex; align-items: center; gap: 12px;">
+                                    Start Building Free
+                                    <svg viewBox="0 0 24 24" class="icon-svg-small" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="hero-visual-content">
+                            <div class="stats-glass-card">
+                                <div class="stat-row">
+                                    <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+                                    <div class="stat-data">
+                                        <div class="stat-num" id="stat-daily-users">Loading...</div>
+                                        <div class="stat-label">Active Users Today</div>
+                                    </div>
+                                </div>
+                                <div class="stat-row">
+                                    <div class="stat-icon" style="background: rgba(138, 180, 248, 0.1); color: var(--accent);"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
+                                    <div class="stat-data">
+                                        <div class="stat-num" id="stat-total-workspaces">Loading...</div>
+                                        <div class="stat-label">Total Workspaces</div>
+                                    </div>
+                                </div>
+                                <div class="stat-row">
+                                    <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning);"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line></svg></div>
+                                    <div class="stat-data">
+                                        <div class="stat-num">10,000+</div>
+                                        <div class="stat-label">Stores Supported</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="landing-features-grid" style="margin-top: 40px;">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="var(--accent)" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                            </div>
+                            <h3 class="selectable">Universal Scraping</h3>
+                            <p class="selectable">Paste a link from Amazon, Best Buy, Walmart, or any obscure site. Our engine instantly extracts the product name, price, and image.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            </div>
+                            <h3 class="selectable">Collaborative Workspaces</h3>
+                            <p class="selectable">Toggle public access on any workspace to generate a read-only link. Share your builds and wishlists with friends or the internet instantly.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="var(--accent)" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                            </div>
+                            <h3 class="selectable">Batch Checkout</h3>
+                            <p class="selectable">Ready to buy? Our batch checkout system opens all your unbought items in new tabs simultaneously, saving you massive amounts of time.</p>
+                        </div>
+                    </div>
+
+                    <footer class="app-footer">
+                        <div class="footer-content">
+                            <div class="footer-logo">OmniCart &copy; 2026</div>
+                            <div class="footer-links">
+                                <a href="#" class="nav-link-internal" data-route="/help">Help Center & FAQ</a>
+                                <a href="#" class="nav-link-internal" data-route="/terms">Terms of Service</a>
+                                <a href="#" class="nav-link-internal" data-route="/privacy">Privacy Policy</a>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </main>
+
+            <main id="view-faq" class="view scrollable-view">
+                <div class="landing-container" style="padding-top: 4vh; max-width: 800px;">
+                    <h1 class="selectable" style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--text-main);">Help Center & FAQ</h1>
+                    <p style="color: var(--text-muted); margin-bottom: 3rem; line-height: 1.6;">Everything you need to know about using OmniCart, troubleshooting errors, and optimizing your shopping experience.</p>
+                    
+                    <div class="faq-section selectable">
+                        <h2 style="color: var(--text-main); margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">General Questions & Troubleshooting</h2>
+                        
+                        <div class="faq-item">
+                            <h4>Which stores are supported?</h4>
+                            <p>Our Universal Scraper Engine works natively with over 10,000 e-commerce sites, including Amazon, Walmart, Target, eBay, AliExpress, Best Buy, Newegg, Home Depot, IKEA, Macy's, Costco, Nike, Apple, Shein, ASOS, and thousands of independent Shopify/BigCommerce/Wix stores. If it has a price tag, we can usually scrape it.</p>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <h4>Why did an item say "Missing Details" or "Anti-Bot Protections"?</h4>
+                            <p>Some major retailers employ aggressive anti-bot software that actively block web scrapers. If our engine gets completely blocked, we will show an error. If we manage to bypass part of it but miss a piece of data, it will return a partial result and ask you to quickly fill in the title and price manually.</p>
+                        </div>
+
+                        <div class="faq-item">
+                            <h4>Can I actually purchase items through OmniCart?</h4>
+                            <p>No. OmniCart is a universal planning and organization tool. When you click "Checkout" or click on a product link, we redirect you securely back to the original retailer's website where you complete the actual purchase natively.</p>
+                        </div>
+
+                        <div class="faq-item">
+                            <h4>Why aren't my cart items syncing across devices?</h4>
+                            <p>Check your internet connection. OmniCart automatically pushes changes to our secure MongoDB cloud servers every time you add, remove, or check off an item. If you have multiple tabs open, try refreshing to force a sync pull from the database.</p>
+                        </div>
+
+                        <div class="faq-item">
+                            <h4>How do Shared Workspaces function?</h4>
+                            <p>By clicking the "Share" button at the top of a workspace, you can toggle "Public Access". This generates a unique link. Anyone with that link can view your workspace, see the items, and click the links to buy them. They cannot delete or modify items.</p>
+                        </div>
+
+                        <div class="faq-item">
+                            <h4>I forgot my password and the reset link isn't arriving?</h4>
+                            <p>If you created your account using the "Continue with Google" button, you do not have a standard password. You must click the Google button to log back in. If you wish to set a password for a Google-linked account, the reset link *should* arrive, but check your spam folder.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-section selectable" id="popups" style="margin-top: 3rem;">
+                        <h2 style="color: var(--text-main); margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Troubleshooting: Pop-ups Blocked</h2>
+                        <div class="faq-item">
+                            <h4>Why isn't "Batch Checkout" / "Checkout Unbought" working?</h4>
+                            <p>To save you time, OmniCart tries to open all your unbought items in new tabs simultaneously. Modern browsers classify opening multiple tabs at once as a "Pop-up" and block it by default to protect you from spam.</p>
+                            
+                            <h5 style="margin-top: 1.5rem; color: var(--text-main);">How to allow OmniCart pop-ups:</h5>
+                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem; color: var(--text-muted); line-height: 1.8;">
+                                <li><strong>Google Chrome:</strong> Look for the "Pop-up blocked" icon <svg style="width:14px;height:14px;vertical-align:middle" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg> in the far right of your address bar. Click it, select "Always allow pop-ups and redirects from omni-cart.org", and click Done.</li>
+                                <li><strong>Safari (Mac):</strong> Go to Safari > Settings > Websites > Pop-up Windows. Find omni-cart.org in the list and change the dropdown to "Allow".</li>
+                                <li><strong>Firefox:</strong> A yellow banner will appear below the address bar. Click "Options" and select "Allow pop-ups for omni-cart.org".</li>
+                                <li><strong>Edge:</strong> Click the "Pop-up blocked" icon in the address bar and select "Always allow".</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <footer class="app-footer" style="margin-top: 4rem;">
+                        <div class="footer-content">
+                            <div class="footer-logo">OmniCart &copy; 2026</div>
+                            <div class="footer-links">
+                                <a href="#" class="nav-link-internal" data-route="/">Back to Home</a>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </main>
+
+            <main id="view-terms" class="view scrollable-view">
+                <div class="landing-container selectable" style="padding-top: 4vh; max-width: 1000px;">
+                    <h1 style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--text-main);">Terms of Service</h1>
+                    <p style="color: var(--text-muted); margin-bottom: 3rem; line-height: 1.6;">Last Updated: April 2026</p>
+                    
+                    <div class="legal-layout-split">
+                        <aside class="legal-nav" id="tos-nav">
+                            <a href="#tos-1" class="active">1. Acceptance of Terms</a>
+                            <a href="#tos-2">2. Description of Service</a>
+                            <a href="#tos-3">3. Your Content & Workspaces</a>
+                            <a href="#tos-4">4. Responsibility of Contributors</a>
+                            <a href="#tos-5">5. Content Posted on Other Websites</a>
+                            <a href="#tos-6">6. Copyright Infringement (DMCA)</a>
+                            <a href="#tos-7">7. Intellectual Property</a>
+                            <a href="#tos-8">8. Access & License</a>
+                            <a href="#tos-9">9. Disclaimer of Warranties</a>
+                            <a href="#tos-10">10. Limitation of Liability</a>
+                        </aside>
+
+                        <div class="legal-content">
+                            <h3 id="tos-1" class="scrollspy-section">1. Acceptance of Terms</h3>
+                            <p>The following terms and conditions govern all use of the omni-cart.org website (the "Website") and all content, services, and products available at or through the website. The Website is owned and operated by OmniCart Inc. (“OmniCart”). The Website is offered subject to your acceptance without modification of all of the terms and conditions contained herein and all other operating rules, policies (including, without limitation, OmniCart’s Privacy Policy) and procedures that may be published from time to time on this Site by OmniCart (collectively, the “Agreement”).</p>
+                            <p>Please read this Agreement carefully before accessing or using the Website. By accessing or using any part of the web site, you agree to become bound by the terms and conditions of this agreement. If you do not agree to all the terms and conditions of this agreement, then you may not access the Website or use any services. The Website is available only to individuals who are at least 13 years old.</p>
+
+                            <h3 id="tos-2" class="scrollspy-section">2. Description of Service</h3>
+                            <p>OmniCart provides a universal shopping cart and workspace utility that allows users to aggregate, save, organize, and share product links ("Items") from various third-party e-commerce websites. OmniCart is solely an organizational tool. We do not sell products, process payments for third-party goods, handle shipping, or manage returns. All purchases initiated through OmniCart are transacted directly on the respective third-party retailer's platform.</p>
+
+                            <h3 id="tos-3" class="scrollspy-section">3. Your Content & Workspaces</h3>
+                            <p>You must not describe or name your workspaces or content in a misleading or unlawful manner, including in a manner intended to trade on the name or reputation of others, and OmniCart may change or remove any description or title that it considers inappropriate or unlawful, or otherwise likely to cause OmniCart liability. You must immediately notify OmniCart of any unauthorized uses of your workspaces, your account, or any other breaches of security. OmniCart will not be liable for any acts or omissions by You, including any damages of any kind incurred as a result of such acts or omissions.</p>
+
+                            <h3 id="tos-4" class="scrollspy-section">4. Responsibility of Contributors</h3>
+                            <p>If you create a public Shared Workspace, post links on the Website, or otherwise make (or allow any third party to make) material available (any such material, “Content”), You are entirely responsible for the content of, and any harm resulting from, that Content. By making Content available, you represent and warrant that:</p>
+                            <ul>
+                                <li>The downloading, copying, and use of the Content will not infringe the proprietary rights, including but not limited to the copyright, patent, trademark or trade secret rights, of any third party.</li>
+                                <li>The Content does not contain or install any viruses, worms, malware, Trojan horses or other harmful or destructive content.</li>
+                                <li>The Content is not spam, is not machine- or randomly-generated, and does not contain unethical or unwanted commercial content designed to drive traffic to third party sites or boost search engine rankings, or to further unlawful acts (such as phishing).</li>
+                                <li>The Content is not pornographic, does not contain threats or incite violence, and does not violate the privacy or publicity rights of any third party.</li>
+                            </ul>
+                            <p>Without limiting any of those representations or warranties, OmniCart has the right (though not the obligation) to, in OmniCart’s sole discretion (i) refuse or remove any content that, in OmniCart’s reasonable opinion, violates any OmniCart policy or is in any way harmful or objectionable, or (ii) terminate or deny access to and use of the Website to any individual or entity for any reason.</p>
+
+                            <h3 id="tos-5" class="scrollspy-section">5. Content Posted on Other Websites</h3>
+                            <p>We have not reviewed, and cannot review, all of the material, including computer software and product listings, made available through the websites and webpages to which omni-cart.org links, and that link to omni-cart.org. OmniCart does not have any control over those websites and webpages, and is not responsible for their contents or their use. By linking to a non-OmniCart website, OmniCart does not represent or imply that it endorses such website or webpage. OmniCart disclaims any responsibility for any harm resulting from your use of non-OmniCart websites and webpages.</p>
+
+                            <h3 id="tos-6" class="scrollspy-section">6. Copyright Infringement (DMCA Policy)</h3>
+                            <p>As OmniCart asks others to respect its intellectual property rights, it respects the intellectual property rights of others. If you believe that material located on or linked to by omni-cart.org violates your copyright, you are encouraged to notify OmniCart in accordance with standard Digital Millennium Copyright Act (“DMCA”) procedures. OmniCart will respond to all such notices, including as required or appropriate by removing the infringing material or disabling all links to the infringing material.</p>
+
+                            <h3 id="tos-7" class="scrollspy-section">7. Intellectual Property</h3>
+                            <p>This Agreement does not transfer from OmniCart to you any OmniCart or third party intellectual property, and all right, title and interest in and to such property will remain solely with OmniCart. OmniCart, omni-cart.org, the OmniCart logo, and all other trademarks, service marks, graphics and logos used in connection with omni-cart.org, or the Website are trademarks or registered trademarks of OmniCart or OmniCart’s licensors. Other trademarks, service marks, graphics and logos used in connection with the Website may be the trademarks of other third parties. Your use of the Website grants you no right or license to reproduce or otherwise use any OmniCart or third-party trademarks.</p>
+
+                            <h3 id="tos-8" class="scrollspy-section">8. Access & License</h3>
+                            <p>Subject to your compliance with these Terms of Service, OmniCart grants you a limited, non-exclusive, non-transferable, non-sublicensable license to access and make personal and non-commercial use of OmniCart. This license does not include any resale or commercial use of any OmniCart services, or its contents; any derivative use of OmniCart or its contents; or any use of data mining, robots, or similar data gathering and extraction tools. You may not misuse OmniCart. You may use OmniCart only as permitted by law. The licenses granted by OmniCart terminate if you do not comply with these Terms of Service.</p>
+
+                            <h3 id="tos-9" class="scrollspy-section">9. Disclaimer of Warranties</h3>
+                            <p>The Website is provided “as is”. OmniCart and its suppliers and licensors hereby disclaim all warranties of any kind, express or implied, including, without limitation, the warranties of merchantability, fitness for a particular purpose and non-infringement. Neither OmniCart nor its suppliers and licensors, makes any warranty that the Website will be error free or that access thereto will be continuous or uninterrupted. You understand that you download from, or otherwise obtain content or services through, the Website at your own discretion and risk.</p>
+
+                            <h3 id="tos-10" class="scrollspy-section">10. Limitation of Liability</h3>
+                            <p>In no event will OmniCart, or its suppliers or licensors, be liable with respect to any subject matter of this agreement under any contract, negligence, strict liability or other legal or equitable theory for: (i) any special, incidental or consequential damages; (ii) the cost of procurement for substitute products or services; (iii) for interruption of use or loss or corruption of data; or (iv) for any amounts that exceed the fees paid by you to OmniCart under this agreement during the twelve (12) month period prior to the cause of action. OmniCart shall have no liability for any failure or delay due to matters beyond their reasonable control. The foregoing shall not apply to the extent prohibited by applicable law.</p>
+                        </div>
+                    </div>
+
+                    <footer class="app-footer" style="margin-top: 4rem;">
+                        <div class="footer-content">
+                            <div class="footer-logo">OmniCart &copy; 2026</div>
+                            <div class="footer-links"><a href="#" class="nav-link-internal" data-route="/">Back to Home</a></div>
+                        </div>
+                    </footer>
+                </div>
+            </main>
+
+            <main id="view-privacy" class="view scrollable-view">
+                <div class="landing-container selectable" style="padding-top: 4vh; max-width: 1000px;">
+                    <h1 style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--text-main);">Privacy Policy</h1>
+                    <p style="color: var(--text-muted); margin-bottom: 3rem; line-height: 1.6;">Last Updated: April 2026</p>
+                    
+                    <div class="legal-layout-split">
+                        <aside class="legal-nav" id="priv-nav">
+                            <a href="#priv-1" class="active">1. Introduction</a>
+                            <a href="#priv-2">2. Information We Collect</a>
+                            <a href="#priv-3">3. Use of Your Information</a>
+                            <a href="#priv-4">4. Disclosure of Information</a>
+                            <a href="#priv-5">5. Tracking Technologies</a>
+                            <a href="#priv-6">6. Data Security</a>
+                            <a href="#priv-7">7. Policy for Minors</a>
+                        </aside>
+
+                        <div class="legal-content">
+                            <h3 id="priv-1" class="scrollspy-section">1. Introduction</h3>
+                            <p>OmniCart ("we", "our", or "us") respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our application. Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the site.</p>
+                            
+                            <h3 id="priv-2" class="scrollspy-section">2. Information We Collect</h3>
+                            <p>We may collect information about you in a variety of ways. The information we may collect via the Application includes:</p>
+                            <ul>
+                                <li><strong>Personal Data:</strong> Personally identifiable information, such as your email address, username, and profile picture, which you voluntarily give to us when you register for the Application or when you choose to link a Google Account.</li>
+                                <li><strong>Workspace Data:</strong> Data pertaining to the items you save, the URLs you paste, the custom modifications you make to product titles/prices, and the workspaces you create.</li>
+                                <li><strong>Derivative Data:</strong> Information our servers automatically collect when you access the Application, such as your IP address, browser type, operating system, access times, and the pages you have viewed directly on our platform.</li>
+                            </ul>
+
+                            <h3 id="priv-3" class="scrollspy-section">3. Use of Your Information</h3>
+                            <p>Having accurate information about you permits us to provide you with a smooth, efficient, and customized experience. Specifically, we may use information collected about you to:</p>
+                            <ul>
+                                <li>Create and manage your account.</li>
+                                <li>Email you regarding your account, including password reset links.</li>
+                                <li>Sync your workspaces seamlessly across multiple devices.</li>
+                                <li>Monitor and analyze usage and trends to improve your experience.</li>
+                                <li>Prevent fraudulent transactions, monitor against theft, and protect against criminal activity.</li>
+                            </ul>
+
+                            <h3 id="priv-4" class="scrollspy-section">4. Disclosure of Your Information</h3>
+                            <p>We may share information we have collected about you in certain situations. Your information may be disclosed as follows:</p>
+                            <ul>
+                                <li><strong>By Law or to Protect Rights:</strong> If we believe the release of information about you is necessary to respond to legal process, to investigate or remedy potential violations of our policies, or to protect the rights, property, and safety of others.</li>
+                                <li><strong>Third-Party Service Providers:</strong> We may share your information with third parties that perform services for us or on our behalf, including data analysis, email delivery, and hosting services (e.g., Firebase, MongoDB Atlas).</li>
+                                <li><strong>Shared Workspaces:</strong> If you intentionally toggle a workspace to "Public Access", the contents of that workspace, along with your Display Username, will be accessible to anyone possessing the shared link. Your email address will remain strictly private.</li>
+                            </ul>
+
+                            <h3 id="priv-5" class="scrollspy-section">5. Tracking Technologies</h3>
+                            <p>We may use cookies, web beacons, tracking pixels, and other tracking technologies on the Site to help customize the Site and improve your experience. When you access the Site, your personal information is not collected through the use of tracking technology for advertising purposes. Most browsers are set to accept cookies by default. You can remove or reject cookies, but be aware that such action could affect the availability and functionality of the Application (e.g., staying logged in).</p>
+
+                            <h3 id="priv-6" class="scrollspy-section">6. Data Security</h3>
+                            <p>We use administrative, technical, and physical security measures to help protect your personal information. All authentication and database operations are managed through enterprise-grade providers (Google Firebase and MongoDB Atlas). While we have taken reasonable steps to secure the personal information you provide to us, please be aware that despite our efforts, no security measures are perfect or impenetrable, and no method of data transmission can be guaranteed against any interception or other type of misuse.</p>
+                            
+                            <h3 id="priv-7" class="scrollspy-section">7. Policy for Minors</h3>
+                            <p>We do not knowingly solicit information from or market to children under the age of 13. If we learn that we have collected personal information from a child under age 13 without verification of parental consent, we will delete that information as quickly as possible.</p>
+                        </div>
+                    </div>
+
+                    <footer class="app-footer" style="margin-top: 4rem;">
+                        <div class="footer-content">
+                            <div class="footer-logo">OmniCart &copy; 2026</div>
+                            <div class="footer-links"><a href="#" class="nav-link-internal" data-route="/">Back to Home</a></div>
+                        </div>
+                    </footer>
+                </div>
+            </main>
+
+            <main id="view-workspace" class="view scrollable-view">
+                <div class="main-container">
+                    
+                    <div id="workspace-transition-loader" style="display:none; width: 100%; height: 4px; border-radius: 2px; margin-bottom: 24px; overflow: hidden; position: relative; background: var(--border);">
+                        <div style="position: absolute; top: 0; left: 0; height: 100%; width: 30%; background: var(--accent); animation: loadingScan 1s infinite ease-in-out; border-radius: 2px;"></div>
+                    </div>
+
+                    <div id="workspace-empty-state" class="empty-state-wrapper">
+                        <h2 class="empty-state-title selectable">Select a Workspace</h2>
+                        <p class="empty-state-desc selectable">Create a new workspace or select an existing one from the sidebar to begin.</p>
+                    </div>
+                    
+                    <div id="workspace-active-state" class="active-cart-wrapper" style="display: none;">
+                        
+                        <div id="workspace-fade-container" class="workspace-fade-enter">
+                            <header class="cart-content-header">
+                                <div class="cart-title-wrapper">
+                                    <h1 id="workspace-display-title" class="selectable">Workspace Name</h1>
+                                    <span id="read-only-badge" class="badge-pill" style="display: none; font-size: 0.7rem; background: var(--warning); color: #000; border: none;">READ-ONLY</span>
+                                </div>
+                                <div class="cart-total-price selectable" id="cart-total-price">$0.00</div>
+                            </header>
+
+                            <div class="quick-add-panel glass-panel" id="cart-add-panel">
+                                <div class="input-group no-margin"><input type="url" id="link-fetch-input" class="form-input selectable" placeholder="Paste product URL (Amazon, BestBuy, Walmart...)"></div>
+                                <div class="quick-add-actions">
+                                    <button class="btn-primary" id="btn-fetch-link">Fetch Link</button>
+                                    <button class="btn-secondary" id="btn-open-custom">Custom</button>
+                                </div>
+                            </div>
+                            
+                            <div class="cart-batch-actions" id="cart-batch-panel" style="justify-content: space-between; align-items: center; position: relative;">
+                                
+                                <div class="checkout-dropdown" id="checkout-batch-dropdown">
+                                    <button class="btn-checkout-trigger" id="btn-checkout-trigger">
+                                        <span class="checkout-text">Checkout Unbought</span>
+                                        <svg id="checkout-dropdown-arrow" viewBox="0 0 24 24" class="icon-svg-small transition-transform" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                    </button>
+                                    <div class="checkout-menu" id="checkout-menu-list" style="display: none;">
+                                        </div>
+                                </div>
+                                
+                                <div class="custom-select-wrapper" id="sort-dropdown-wrapper" style="position: relative;">
+                                    <button class="btn-secondary btn-sort-trigger" id="btn-sort-trigger" style="border-radius: 20px; font-size: 0.85rem; padding: 8px 16px;">
+                                        <span id="sort-active-text">Sort: Added Date</span>
+                                        <svg id="sort-dropdown-arrow" viewBox="0 0 24 24" class="icon-svg-small transition-transform" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                    </button>
+                                    <div class="checkout-menu" id="sort-menu-list" style="display: none; right: 0; left: auto; min-width: 180px;">
+                                        <button class="checkout-menu-item" data-sort="default">Sort: Added Date</button>
+                                        <button class="checkout-menu-item" data-sort="store">Sort: By Store</button>
+                                        <button class="checkout-menu-item" data-sort="price-asc">Price: Low to High</button>
+                                        <button class="checkout-menu-item" data-sort="price-desc">Price: High to Low</button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="product-list-container" id="product-list-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <main id="view-search" class="view scrollable-view">
+                <div class="main-container search-layout">
+                    <div class="search-input-wrapper">
+                        <svg viewBox="0 0 24 24" class="icon-svg search-icon" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" id="global-search-input" class="search-hero-input selectable" placeholder="Search Workspaces..." autocomplete="off">
+                    </div>
+                    <div id="search-loading-bar" class="gemini-loading-bar" style="display: none;"></div>
+                    
+                    <div id="search-idle-state" style="width: 100%; margin-top: 30px;">
+                        <div class="search-meta-text selectable" style="margin-top: 0; margin-bottom: 16px;">Recent Workspaces</div>
+                        <div id="search-recent-container" class="search-results-grid"></div>
+                    </div>
+
+                    <div id="search-results-meta" class="search-meta-text selectable" style="display: none;"></div>
+                    <div id="search-results-container" class="search-results-grid"></div>
+                </div>
+            </main>
+
+            <main id="view-reset" class="view scrollable-view">
+                <div class="landing-container" style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
+                    <div class="modal-card" id="reset-form-card" style="transform: scale(1); max-width: 480px; width: 100%;">
+                        <div style="text-align: center; margin-bottom: 1.5rem;">
+                            <h2 class="modal-title selectable" style="margin-bottom: 0.5rem;">Secure Reset</h2>
+                            <p class="modal-subtitle selectable" style="font-size: 0.95rem;">Enter a strong new password to secure your OmniCart account.</p>
+                        </div>
+                        <div class="form-wrapper">
+                            <div class="input-group"><input type="password" id="new-reset-password" class="form-input selectable" placeholder="New Password"></div>
+                            <div class="input-group"><input type="password" id="confirm-reset-password" class="form-input selectable" placeholder="Confirm Password"></div>
+                            <button class="btn-primary btn-full-width mt-2" id="btn-submit-new-password" style="padding: 16px;">Update Password</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div id="gemini-context-menu" class="context-menu" style="display: none;">
+        <button class="menu-item" id="ctx-share">
+            <svg viewBox="0 0 24 24" class="icon-svg-small" fill="none" stroke="currentColor"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            Share
+        </button>
+        <button class="menu-item" id="ctx-pin">
+            <svg viewBox="0 0 24 24" class="icon-svg-small" fill="none" stroke="currentColor"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+            Pin
+        </button>
+        <button class="menu-item" id="ctx-rename">
+            <svg viewBox="0 0 24 24" class="icon-svg-small" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            Rename
+        </button>
+        <button class="menu-item text-danger" id="ctx-delete">
+            <svg viewBox="0 0 24 24" class="icon-svg-small" fill="none" stroke="currentColor"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            Delete
+        </button>
+    </div>
+
+    <div class="modal-overlay" id="modal-delete-confirm">
+        <div class="modal-card gemini-modal-small">
+            <h2 class="modal-title-small">Delete workspace?</h2>
+            <p class="modal-desc selectable">This will permanently delete this workspace, all saved products, and revoke any shared access. This action cannot be undone.</p>
+            <div class="modal-actions-right">
+                <button class="btn-text-primary" data-close="modal-delete-confirm" style="color: var(--text-main);">Cancel</button>
+                <button class="btn-text-primary" id="btn-confirm-delete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-new-workspace">
+        <div class="modal-card">
+            <button class="btn-close-modal" aria-label="Close" data-close="modal-new-workspace">✕</button>
+            <h2 class="modal-title">Create Workspace</h2>
+            <div class="form-wrapper">
+                <div class="input-group">
+                    <input type="text" id="new-workspace-name" class="form-input selectable" placeholder="Workspace Name (e.g. Dream PC)" autocomplete="off">
+                </div>
+                <label class="input-label" style="margin-top: 8px;">Select an Icon</label>
+                <div class="icon-selection-grid" id="new-workspace-icon-grid">
+                    <button class="icon-grid-item active" data-icon="bag"><svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line></svg></button>
+                    <button class="icon-grid-item" data-icon="shirt"><svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46L16 2a8.96 8.96 0 0 1-4 1 8.96 8.96 0 0 1-4-1L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg></button>
+                    <button class="icon-grid-item" data-icon="phone"><svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><path d="M12 18h.01"></path><path d="M9 2h6v2H9z"></path></svg></button>
+                    <button class="icon-grid-item" data-icon="couch"><svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0Z"/><path d="M4 18v2"/><path d="M20 18v2"/><path d="M12 4v9"/></svg></button>
+                    <button class="icon-grid-item" data-icon="backpack"><svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"></path><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path><path d="M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"></path><path d="M8 10h8"></path></svg></button>
+                    <button class="icon-grid-item" data-icon="toy"><svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path></svg></button>
+                    <button class="icon-grid-item" data-icon="laptop"><svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2" ry="2"></rect><line x1="2" y1="20" x2="22" y2="20"></line></svg></button>
+                    <button class="icon-grid-item" data-icon="tv"><svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg></button>
+                    <button class="icon-grid-item" data-icon="camera"><svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg></button>
+                    <button class="icon-grid-item" data-icon="book"><svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg></button>
+                    <button class="icon-grid-item" data-icon="fitness"><svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h8"></path><rect x="4" y="6" width="4" height="12" rx="1"></rect><rect x="16" y="6" width="4" height="12" rx="1"></rect><path d="M2 9h2v6H2z"></path><path d="M20 9h2v6h-2z"></path></svg></button>
+                    <button class="icon-grid-item" data-icon="paw"><svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c-2.5 0-4.5-1.5-4.5-4 0-1.5 1-2.5 2-4s2-2.5 2.5-2.5 1.5 1 2.5 2.5 2 2.5 2 4c0 2.5-2 4-4.5 4z"></path><circle cx="6" cy="11" r="2"></circle><circle cx="10" cy="5" r="2"></circle><circle cx="14" cy="5" r="2"></circle><circle cx="18" cy="11" r="2"></circle></svg></button>
+                    <button class="icon-grid-item" data-icon="box"><svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></button>
+                    <button class="icon-grid-item" data-icon="monitor"><svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></button>
+                    <button class="icon-grid-item" data-icon="home"><svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></button>
+                    <button class="icon-grid-item" data-icon="car"><svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.8l-1.4 2.5C1.5 10.6 1 11.3 1 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></button>
+                    <button class="icon-grid-item" data-icon="music"><svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></button>
+                    <button class="icon-grid-item" data-icon="gear"><svg viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+                </div>
+                <button class="btn-primary btn-full-width mt-2" id="btn-confirm-new-workspace">Create Workspace</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-popup-blocked">
+        <div class="modal-card">
+            <button class="btn-close-modal" aria-label="Close" data-close="modal-popup-blocked">✕</button>
+            <h2 class="modal-title selectable" style="color: var(--warning); margin-bottom: 8px;">Pop-ups Blocked!</h2>
+            <p class="modal-desc selectable" style="text-align: center;">Your browser prevented OmniCart from opening multiple tabs at once. You can click the links below manually, or allow pop-ups for this site.</p>
+            <div class="form-wrapper">
+                <div id="blocked-links-container" style="max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding: 12px; background: var(--bg-base); border-radius: 8px; border: 1px solid var(--border);">
+                    </div>
+                <button class="btn-primary btn-full-width mt-2" id="btn-learn-popups">Learn how to allow pop-ups</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-rename">
+        <div class="modal-card" style="max-width: 600px;">
+            <button class="btn-close-modal" aria-label="Close" data-close="modal-rename">✕</button>
+            <h2 class="modal-title" style="text-align: left;">Workspace Settings</h2>
+            
+            <div class="rename-layout-split" style="display: flex; gap: 24px; margin-top: 16px;">
+                <div style="flex: 1;">
+                    <label class="input-label" style="margin-bottom: 8px; display: block;">Workspace Name</label>
+                    <input type="text" id="rename-workspace-input" class="form-input selectable" autocomplete="off">
+                </div>
+                <div style="flex: 1.5;">
+                    <label class="input-label" style="margin-bottom: 8px; display: block;">Workspace Icon</label>
+                    <div class="icon-selection-grid icon-selection-grid-small" id="rename-workspace-icon-grid" style="grid-template-columns: repeat(4, 1fr); max-height: 180px; overflow-y: auto; padding-right: 8px;">
+                        </div>
+                </div>
+            </div>
+
+            <div class="modal-actions-right mt-2" style="margin-top: 24px;">
+                <button class="btn-text-primary" data-close="modal-rename" style="color: var(--text-main);">Cancel</button>
+                <button class="btn-text-primary" id="btn-confirm-rename">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-auth">
+        <div class="modal-card" style="overflow: hidden;">
+            <button class="btn-close-modal" aria-label="Close" data-close="modal-auth">✕</button>
+            <div class="modal-tabs">
+                <button class="tab-btn active" data-auth-target="login">Log In</button>
+                <button class="tab-btn" data-auth-target="register">Sign Up</button>
+            </div>
+            <h2 class="modal-title selectable" id="auth-modal-title">Welcome Back</h2>
+            
+            <button class="btn-google btn-full-width" id="btn-google-auth" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <svg viewBox="0 0 24 24" class="icon-svg-small" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                Continue with Google
+            </button>
+            <div class="auth-divider" id="auth-divider-line"><span>or with email</span></div>
+            
+            <div class="modal-slider-window">
+                <div class="modal-slider-track" id="auth-slider-track" style="width: 300%; display: flex;">
+                    
+                    <div class="modal-slider-panel" style="width: 33.3333%;">
+                        <div class="form-wrapper" style="padding-right: 10px;">
+                            <div class="input-group"><input type="email" id="login-email" class="form-input selectable" placeholder="Email Address"></div>
+                            <div class="input-group"><input type="password" id="login-password" class="form-input selectable" placeholder="Password"></div>
+                            <div class="forgot-link-wrapper"><span class="forgot-link" id="btn-forgot-password" data-auth-target="recover">Forgot password?</span></div>
+                            <button class="btn-primary btn-full-width mt-2" id="btn-submit-login">Log In Securely</button>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-slider-panel" style="width: 33.3333%;">
+                        <div class="form-wrapper" style="padding-right: 10px;">
+                            <div class="input-group"><input type="text" id="reg-username" class="form-input selectable" placeholder="Choose a Username"></div>
+                            <div class="input-group"><input type="email" id="reg-email" class="form-input selectable" placeholder="Email Address"></div>
+                            <div class="input-group"><input type="password" id="reg-password" class="form-input selectable" placeholder="Create Password"></div>
+                            
+                            <div class="input-group" style="flex-direction: row; align-items: flex-start; gap: 8px; margin-top: 4px;">
+                                <input type="checkbox" id="reg-tos-check" style="margin-top: 3px; cursor: pointer;">
+                                <label for="reg-tos-check" style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; cursor: pointer;">
+                                    By clicking this box you agree to our <a href="#" class="nav-link-internal" data-route="/terms" style="color: var(--accent);">Terms & Conditions</a> and our <a href="#" class="nav-link-internal" data-route="/privacy" style="color: var(--accent);">Privacy Policy</a>.
+                                </label>
+                            </div>
+
+                            <button class="btn-primary btn-full-width" id="btn-submit-register" disabled style="opacity: 0.5; cursor: not-allowed;">Create Account</button>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-slider-panel" style="width: 33.3333%;">
+                        <div class="form-wrapper" style="padding-right: 10px;">
+                            <div style="text-align: center; margin-bottom: 10px;">
+                                <p style="font-size: 0.9rem; color: var(--text-muted);">Enter your email to receive a secure reset link.</p>
+                            </div>
+                            <div class="input-group"><input type="email" id="recover-email" class="form-input selectable" placeholder="Email Address"></div>
+                            <button class="btn-primary btn-full-width mt-2" id="btn-do-recover">Send Recovery Link</button>
+                            <button class="btn-text btn-full-width" id="btn-back-to-login" data-auth-target="login">Back to Login</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-settings">
+        <div class="modal-card">
+            <button class="btn-close-modal" aria-label="Close" data-close="modal-settings">✕</button>
+            <div class="modal-tabs">
+                <button class="tab-btn active" data-set-target="profile">Profile</button>
+                <button class="tab-btn" data-set-target="security">Account</button>
+            </div>
+            <h2 class="modal-title">Preferences</h2>
+            <div class="modal-slider-window">
+                <div class="modal-slider-track" id="settings-slider-track" style="width: 200%; display: flex;">
+                    <div class="modal-slider-panel" style="width: 50%;">
+                        <div class="form-wrapper" style="padding-right: 10px;">
+                            <div class="input-group"><label class="input-label">Display Username</label><input type="text" id="set-username" class="form-input selectable"></div>
+                            <div class="input-group"><label class="input-label">Avatar Image URL</label><input type="url" id="set-pfp-url" class="form-input selectable" placeholder="https://..."></div>
+                            <button class="btn-primary btn-full-width mt-2" id="btn-save-profile">Save Profile</button>
+                        </div>
+                    </div>
+                    <div class="modal-slider-panel" style="width: 50%;">
+                        <div class="form-wrapper" style="padding-right: 10px;">
+                            <button class="btn-secondary btn-full-width" id="btn-link-google" style="display: flex; gap: 8px;"><svg viewBox="0 0 24 24" class="icon-svg-small" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg><span>Link Google Account</span></button>
+                            <button class="btn-danger btn-full-width" id="btn-logout">Log Out of OmniCart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-share">
+        <div class="modal-card">
+            <button class="btn-close-modal" aria-label="Close" data-close="modal-share">✕</button>
+            <h2 class="modal-title">Share Workspace</h2>
+            <div class="form-wrapper">
+                <div class="share-toggle-wrapper">
+                    <div>
+                        <div style="font-weight: 600; color: var(--text-main);">Public Access</div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted);">Anyone with the link can view</div>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="share-toggle-checkbox"><span class="slider"></span><span class="slider-knob"></span></label>
+                </div>
+                <div class="input-group mt-2" id="share-link-container">
+                    <div style="display: flex; gap: 10px;"><input type="text" id="share-link-input" class="form-input selectable" readonly><button class="btn-secondary" id="btn-copy-link">Copy</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="modal-custom-item">
+        <div class="modal-card">
+            <button class="btn-close-modal" aria-label="Close" data-close="modal-custom-item">✕</button>
+            <h2 class="modal-title">Add Custom Item</h2>
+            <div class="form-wrapper">
+                <div class="input-group"><input type="text" id="cust-item-title" class="form-input selectable" placeholder="Product Title"></div>
+                <div class="input-group"><input type="number" id="cust-item-price" class="form-input selectable" placeholder="Price ($)"></div>
+                <div class="input-group"><input type="url" id="cust-item-url" class="form-input selectable" placeholder="Product URL"></div>
+                <button class="btn-primary btn-full-width mt-2" id="btn-save-custom-item">Inject Item</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-partial-item">
+        <div class="modal-card">
+            <button class="btn-close-modal" aria-label="Close" data-close="modal-partial-item">✕</button>
+            <h2 class="modal-title selectable" style="margin-bottom: 8px;">Missing Details</h2>
+            <p class="selectable" style="font-size: 0.9rem; color: var(--warning); margin-bottom: 24px; text-align: center; line-height: 1.4;">Anti-bot protections prevented us from getting everything. Please fill in the blanks!</p>
+            <div class="form-wrapper">
+                <div class="input-group"><label class="input-label">Product Title</label><input type="text" id="partial-item-title" class="form-input selectable" placeholder="e.g., Wireless Mouse"></div>
+                <div class="input-group"><label class="input-label">Price ($)</label><input type="number" step="0.01" id="partial-item-price" class="form-input selectable" placeholder="0.00"></div>
+                <div class="input-group"><label class="input-label">Image URL</label><input type="url" id="partial-item-img" class="form-input selectable" placeholder="https://..."></div>
+                <input type="hidden" id="partial-item-url"><input type="hidden" id="partial-item-site">
+                <button class="btn-primary btn-full-width mt-2" id="btn-save-partial-item">Add to Workspace</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
