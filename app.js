@@ -32,7 +32,6 @@ const currentOrigin = window.location.origin;
 const currentPath = window.location.pathname.includes('index.html') ? window.location.pathname.split('index.html')[0] + 'index.html' : '';
 const DOMAIN_URL = isLocal ? `${currentOrigin}${currentPath}` : 'https://omni-cart.org';
 
-// ---> BACKEND LINK UPDATED HERE <---
 const API_URL = isLocal ? 'http://localhost:3000/api' : 'https://omnicart-backend-jrh4.onrender.com/api'; 
 
 const state = { 
@@ -1085,6 +1084,17 @@ function renderMainWorkspace(shouldFade = false) {
     else if (state.currentSort === 'price-desc') displayItems.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
     else if (state.currentSort === 'store') displayItems.sort((a, b) => a.site.localeCompare(b.site));
 
+    // FIX: HTML Sanitizer to prevent DOM quote breaking!
+    const escapeHTML = (str) => {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    };
+
     displayItems.forEach((item) => {
         if (!item.bought) runningTotal += parseFloat(item.price || 0);
         
@@ -1094,19 +1104,25 @@ function renderMainWorkspace(shouldFade = false) {
         const markBoughtBtn = isOwner ? `<button class="btn-text" onclick="toggleItemState(${item.originalIdx})">${item.bought ? 'Undo' : iconCheck}</button>` : '';
         const deleteBtn = isOwner ? `<button class="btn-text text-danger" onclick="removeItem(${item.originalIdx})">${iconX}</button>` : '';
 
+        // Properly escape all attributes to prevent layout blowout
+        const safeTitle = escapeHTML(item.title);
+        const safeImg = escapeHTML(item.img);
+        const safeUrl = escapeHTML(item.url);
+        const safePrice = parseFloat(item.price || 0).toFixed(2);
+
         listContainer.innerHTML += `
             <div class="product-card ${boughtClass} store-${safeSite}">
-                <div class="p-img-wrapper"><img src="${item.img}" class="p-img" loading="lazy" onerror="this.src='https://ui-avatars.com/api/?name=Image&background=f0f4f9&color=4b5563'"></div>
+                <div class="p-img-wrapper"><img src="${safeImg}" class="p-img" loading="lazy" onerror="this.src='https://ui-avatars.com/api/?name=Image&background=f0f4f9&color=4b5563'"></div>
                 <div class="p-details">
                     <div class="p-store-info">
                         <img src="https://www.google.com/s2/favicons?domain=${item.site}.com&sz=32" class="p-store-logo" onerror="this.style.display='none'">
                         <div class="p-site">${item.site}</div>
                     </div>
-                    <div class="p-title-container"><div class="p-title selectable" title="${item.title}">${item.title}</div></div>
-                    <div class="p-price selectable">$${parseFloat(item.price || 0).toFixed(2)}</div>
+                    <div class="p-title-container"><div class="p-title selectable" title="${safeTitle}">${safeTitle}</div></div>
+                    <div class="p-price selectable">$${safePrice}</div>
                 </div>
                 <div class="p-actions-stack">
-                    <button class="btn-secondary" onclick="window.open('${item.url}')">${iconLink}</button>
+                    <button class="btn-secondary" data-url="${safeUrl}" onclick="window.open(this.getAttribute('data-url'))">${iconLink}</button>
                     ${markBoughtBtn}
                     ${deleteBtn}
                 </div>
